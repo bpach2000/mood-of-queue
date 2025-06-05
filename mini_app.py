@@ -33,7 +33,7 @@ st.subheader("1. Log your mood")
 
 # Dropdown menu for mood selection
 selected_mood = st.selectbox("How are you feeling?", list(moods.keys()))
-note = st.text_input("Optional note")
+note = st.text_input("Optional note")              
 submit = st.button("Submit Mood")
 
 if submit:
