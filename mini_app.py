@@ -3,18 +3,20 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime, date
-from oauth2client.service_account import ServiceAccountCredentials
 
+# Define the scopes
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
 
+# Get credentials from Streamlit secrets
 credentials_dict = st.secrets["gcp_service_account"]
 
+# Create credentials from the dict
 creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
 
-# Set up Google Sheets
-scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+# Authorize gspread client
 client = gspread.authorize(creds)
+
+# Open your Google Sheet by name
 sheet = client.open("mini-app-logger").sheet1  
 
 st.title("My mini health log app 😊")
@@ -29,7 +31,7 @@ moods = {
 
 st.subheader("1. Log your mood")
 
-# Drop down menu created
+# Dropdown menu for mood selection
 selected_mood = st.selectbox("How are you feeling?", list(moods.keys()))
 note = st.text_input("Optional note")
 submit = st.button("Submit Mood")
@@ -48,7 +50,7 @@ st.subheader(f"2. Mood Overview ({today})")
 data = sheet.get_all_records()
 df = pd.DataFrame(data)
 
-# Strip any extra spaces from column names
+# Strip extra spaces from column names
 df.columns = df.columns.str.strip()
 
 # Debug: show columns and first few rows
