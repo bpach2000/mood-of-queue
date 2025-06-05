@@ -3,6 +3,18 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime, date
+import json
+from oauth2client.service_account import ServiceAccountCredentials
+
+# Load the credentials from Streamlit secrets
+credentials_dict = st.secrets["gcp_service_account"]
+
+# Convert secrets dict to JSON string, then to dict (if needed)
+creds_json = json.dumps(credentials_dict)
+
+# Use oauth2client to create credentials from JSON string
+import io
+creds = ServiceAccountCredentials.from_json_keyfile_dict(json.loads(creds_json), scope)
 
 # Set up Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
